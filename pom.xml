@@ -55,6 +55,16 @@
 					</archive>
 				</configuration>
 			</plugin>
+			<plugin>
+            			<groupId>org.apache.tomcat.maven</groupId>
+            			<artifactId>tomcat10-maven-plugin</artifactId> <!-- or tomcat10-maven-plugin -->
+            			<version>10.1.34</version>
+            			<configuration>
+                			<url>http://localhost:8080/manager/text</url>
+                			<server>http://localhost:8080/</server>
+                			<path>/your-app</path>
+            			</configuration>
+        		</plugin>
 		</plugins>
 
 	</build>
