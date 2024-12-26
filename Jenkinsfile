@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     // Define your Tomcat server details
-                    def tomcatServer = 'http://127.0.0.1:8080/'  // Replace with your Tomcat server's address
+                    def tomcatServer = '127.0.0.1'  // Replace with your Tomcat server's address
                     def tomcatUser = 'admin'    // Replace with your Tomcat username
                     def tomcatPassword = 'admin_password' // Replace with your Tomcat password
                     def tomcatPath = 'admin@127.0.0.1:/opt/tomcat/webapps' // Path to Tomcat's webapps folder
