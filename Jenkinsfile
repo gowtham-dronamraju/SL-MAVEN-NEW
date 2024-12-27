@@ -1,5 +1,18 @@
 pipeline {
     agent any
+
+    environment {
+        TOMCAT_USER = 'tomcat'
+        TOMCAT_PASSWORD = 'admin_password'
+        TOMCAT_HOST = '127.0.0.1'
+        TOMCAT_PORT = '8080'
+        TOMCAT_WEBAPPS_DIR = '/opt/tomcat/webapps'
+        LOCAL_JAR_PATH = '/var/lib/jenkins/.m2/repository/devops/sl/devops.sl/0.0.1-SNAPSHOT/devops.sl-0.0.1-SNAPSHOT.jar'
+        REMOTE_JAR_PATH = '/opt/tomcat/webapps/devops.sl-0.0.1-SNAPSHOT.jar'
+        SSH_KEY_PATH = '/home/gowtham/.ssh/id_rsa'
+        SSH_USER = 'gowtham'
+        SSH_PASSWORD = 'Avyaan1!'
+    }
     tools {        
         maven 'MAVEN_HOME'
     }
@@ -27,31 +40,37 @@ pipeline {
                 echo "Build Successful"
             }
         }   
+            
         
-        stage('Final Success') {
-            steps {
-                echo "Final Successful"
-            }
-        }     
-        stage('Deploy to Tomcat') {
+
+
+        stage('Deploy JAR to Tomcat') {
             steps {
                 script {
-                    // Define your Tomcat server details
-                    def tomcatServer = '127.0.0.1'  // Replace with your Tomcat server's address
-                    def tomcatUser = 'gowtham'    // Replace with your Tomcat username
-                    def tomcatPassword = 'Avyaan1!' // Replace with your Tomcat password
-                    def tomcatPath = 'gowtham@127.0.0.1:/opt/tomcat/webapps' // Path to Tomcat's webapps folder
-                    
-                    // Define the JAR path to deploy
-                    def jarFile = '/var/lib/jenkins/.m2/repository/devops/sl/devops.sl/0.0.1-SNAPSHOT/devops.sl-0.0.1-SNAPSHOT.jar'
+                    // Deploy the JAR file using SSH and SCP
+                    sh '''
+                    # Check if the SSH key has the right permissions
+                    chmod 600 $SSH_KEY_PATH
 
-                    // Use SSH to copy the JAR file to Tomcat's webapps directory
-                    sh """
-                        scp -o StrictHostKeyChecking=no -i /home/gowtham/.ssh/id_rsa ${jarFile} ${tomcatUser}@${tomcatServer}:${tomcatPath}
-                    """
+                    # Transfer the JAR file to the Tomcat server
+                    scp -i $SSH_KEY_PATH $LOCAL_JAR_PATH $TOMCAT_USER@$TOMCAT_HOST:$REMOTE_JAR_PATH
+                    
+                    # Restart Tomcat to apply changes (only if needed)
+                    ssh -i $SSH_KEY_PATH $TOMCAT_USER@$TOMCAT_HOST "sudo systemctl restart tomcat"
+                    '''
                 }
             }
-        }    
-
+        }
     }
+
+    post {
+        success {
+            echo 'Deployment was successful!'
+        }
+        failure {
+            echo 'Deployment failed.'
+        }
+    }    
+
+   
 }
