@@ -40,7 +40,7 @@ pipeline {
                     def tomcatServer = '127.0.0.1'  // Replace with your Tomcat server's address
                     def tomcatUser = 'gowtham'    // Replace with your Tomcat username
                     def tomcatPassword = 'Avyaan1!' // Replace with your Tomcat password
-                    def tomcatPath = 'admin@127.0.0.1:/opt/tomcat/webapps' // Path to Tomcat's webapps folder
+                    def tomcatPath = 'gowtham@127.0.0.1:/opt/tomcat/webapps' // Path to Tomcat's webapps folder
                     
                     // Define the JAR path to deploy
                     def jarFile = '/var/lib/jenkins/.m2/repository/devops/sl/devops.sl/0.0.1-SNAPSHOT/devops.sl-0.0.1-SNAPSHOT.jar'
