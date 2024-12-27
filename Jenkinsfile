@@ -9,7 +9,7 @@ pipeline {
         TOMCAT_WEBAPPS_DIR = '/opt/tomcat/webapps'
         LOCAL_JAR_PATH = '/var/lib/jenkins/.m2/repository/devops/sl/devops.sl/0.0.1-SNAPSHOT/devops.sl-0.0.1-SNAPSHOT.jar'
         REMOTE_JAR_PATH = '/opt/tomcat/webapps/devops.sl-0.0.1-SNAPSHOT.jar'
-        SSH_KEY_PATH = '/home/gowtham/.ssh/id_rsa'
+        SSH_KEY_PATH = '/var/lib/jenkins/.ssh/id_rsa'
         SSH_USER = 'gowtham'
         SSH_PASSWORD = 'Avyaan1!'
     }
